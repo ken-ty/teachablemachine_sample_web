@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>条件判定の例</title>
+</head>
+<body>
+  <h1>木のポーズ</h1>
+  <p id="display">0:00:00</p>
+  
+  <button onclick="startStopwatch();init()">Start</button>
+  <button onclick="stopStopwatch()">Stop</button>
+
+  <script>
+    let stopwatch;
+    let isRunning = false;
+    let startTime;
+    let elapsedTime = 0;
+
+    function startStopwatch() {
+      if (!isRunning) {
+        isRunning = true;
+        startTime = Date.now() - elapsedTime;
+        stopwatch = setInterval(updateDisplay, 1000); // Update display every second
+      }
+    }
+
+    async function stopStopwatch() {
+      if (isRunning) {
+        isRunning = false;
+        clearInterval(stopwatch);
+        elapsedTime = Date.now() - startTime;
+
+        // 画面遷移して秒数を表示
+        const seconds = elapsedTime / 1000;
+        window.location.href = `d.html?seconds=${seconds}`;
+      }
+    }
+
+    function updateDisplay() {
+      if (isRunning) {
+        const currentTime = Date.now();
+        elapsedTime = currentTime - startTime;
+      }
+
+      const seconds = Math.floor((elapsedTime / 1000) % 60);
+      const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
+      const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+
+      const display = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+      document.getElementById('display').textContent = display;
+    }
+
+    function pad(number) {
+      return number < 10 ? '0' + number : number;
+    }
+  </script>
+  <!-- Teachable Machine Pose Model -->
+  <div><canvas id="canvas"></canvas></div>
+  <div id="label-container"></div>
+  <img id="myImage" style="display: none;" />
+
+  <!-- TensorFlow.jsとTeachable Machine Pose Modelライブラリを含む -->
+  <script src="./tf.min.js"></script>
+  <script src="./teachablemachine-pose.min.js"></script>
+
+  <script type="text/javascript">
+    // Teachable Machine Pose ModelのURL
+    const URL = "https://teachablemachine.withgoogle.com/models/T2XF5f4wn/";
+    
+    // モデル、ウェブカム、キャンバス、ラベルコンテナ、および最大予測数の変数
+    let model, webcam, ctx, labelContainer, maxPredictions;
+    
+    // 初期化が開始されたかどうかを追跡する変数
+    let hasStarted = false;
+
+    // お題のリスト（適切なお題に変更してください）
+    const topics = [
+      "木のポーズ",
+      "ふううん！春日",
+      "ミッキーisジャンボリ",
+      "あかんすよ！",
+      // お題を追加できます
+    ];
+
+    // 現在のお題のインデックス
+    let currentTopicIndex = 0;
+
+    // 初期化関数
+    async function init() {
+      const modelURL = URL + "model.json";
+      const metadataURL = URL + "metadata.json";
+
+      // Teachable Machine Pose Modelをロード
+      model = await tmPose.load(modelURL, metadataURL);
+      maxPredictions = model.getTotalClasses();
+
+      // ウェブカムをセットアップ
+      const size = 400;
+      const fps = 30;
+      const flip = true;
+      webcam = new tmPose.Webcam(size, size, flip, fps);
+      await webcam.setup();
+      await webcam.play();
+
+      // 初期化が完了したことを示すフラグを更新
+      hasStarted = true;
+
+      // アニメーションループを開始
+      window.requestAnimationFrame(loop);
+
+      // キャンバスとラベルコンテナを設定
+      const canvas = document.getElementById("canvas");
+      canvas.width = size;
+      canvas.height = size;
+
+      labelContainer = document.getElementById("label-container");
+      labelContainer.innerHTML = "";
+
+      for (let i = 0; i < maxPredictions; i++) {
+        const labelDiv = document.createElement("div");
+        labelContainer.appendChild(labelDiv);
+      }
+
+      // ボタンクリック後に10秒後に画像を表示し、次のお題に切り替える
+      setTimeout(() => {
+        showNextTopic();
+        showImage();
+      }, 10000);
+    }
+
+    // アニメーションループ関数
+    async function loop(timestamp) {
+      // 初期化が完了していない場合、待機してループを継続
+      if (!hasStarted) {
+        window.requestAnimationFrame(loop);
+        return;
+      }
+
+      // ウェブカムフィードを更新
+      webcam.update();
+
+      // 現在のウェブカムフレームに基づいて予測を行う
+      await predict();
+
+      // アニメーションループを継続
+      window.requestAnimationFrame(loop);
+    }
+
+    // 最後の予測のタイムスタンプを追跡する変数
+    let lastTimestamp = 0;
+    
+    // 予測を行う関数
+    async function predict() {
+      const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+      const predictions = await model.predict(posenetOutput);
+
+      // キャンバスまたはポーズが利用できない場合、処理を終了
+      if (!webcam.canvas || !pose) return;
+
+      // ラベルコンテナに予測を表示
+      for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = `${predictions[i].className}: ${predictions[i].probability.toFixed(2)}`;
+        document.getElementById("label-container").childNodes[i].innerHTML = classPrediction;
+        
+        // 予測が1の場合、次のお題を表示
+        if (predictions[i].probability === 1) {
+          showNextTopic();
+          showImage();
+        }
+      }
+
+      // キャンバスにポーズを描画
+      drawPose(pose);
+    }
+
+    // キャンバスにポーズを描画する関数
+    function drawPose(pose) {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      if (webcam.canvas) {
+        ctx.drawImage(webcam.canvas, 0, 0);
+        tmPose.drawKeypoints(pose.keypoints, 0.5, ctx);
+        tmPose.drawSkeleton(pose.keypoints, 0.5, ctx);
+      }
+    }
+
+    // 10秒後に画像を表示する関数
+    function showImage() {
+      // 画像のパス（適切なパスに変更してください）
+      var imagePath = "img/gojas.jpg";
+  
+      // 画像要素を取得
+      var imgElement = document.getElementById("myImage");
+  
+      // 画像のパスを設定
+      imgElement.src = imagePath;
+  
+      // 画像を表示
+      imgElement.style.display = "block";
+    }
+
+    // 次のお題に切り替える関数
+    function showNextTopic() {
+      // 現在のお題のインデックスをインクリメント
+      currentTopicIndex = (currentTopicIndex + 1) % topics.length;
+            // 次のお題を表示
+            document.querySelector('h1').innerText = topics[currentTopicIndex];
+    }
+  </script>
+
+  <a href="/menu">やめる</a>
+</body>
+</html>
+

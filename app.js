@@ -8,9 +8,26 @@ const port = 8000;
 //expressモジュールを利用しアプリケーションオブジェクトappを作成
 const app = express()
 
-// TODO: dist ディレクトリを公開する設定
+// ルートは menu に遷移するものとする
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/src/html/index.html');
+  res.redirect('/menu/');
+})
+
+app.get('/menu', (req, res) => {
+  // TODO: src でなく, dist ディレクトリを公開する設定にする
+  res.sendFile(__dirname + '/src/html/menu.html');
+})
+
+app.get('/game', (req, res) => {
+  res.sendFile(__dirname + '/src/html/game.html');
+})
+
+app.get('/result', (req, res) => {
+  res.sendFile(__dirname + '/src/html/result.html');
+})
+
+app.get('/ranking', (req, res) => {
+  res.sendFile(__dirname + '/src/html/ranking.html');
 })
 
 //サーバーを起動したら、リクエストを8000番ポートで待ち受ける設定。
