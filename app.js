@@ -8,9 +8,9 @@ const port = 8000;
 //expressモジュールを利用しアプリケーションオブジェクトappを作成
 const app = express()
 
-// HTTPgetメソッドでアクセスしたら、'Hello World!'と表示される設定。
+// TODO: dist ディレクトリを公開する設定
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.sendFile(__dirname + '/src/html/index.html');
 })
 
 //サーバーを起動したら、リクエストを8000番ポートで待ち受ける設定。
