@@ -45,3 +45,9 @@ TODO: dist ディレクトリを作成し、webpackでバンドルする
 ## assets について
 
  BGM: DOVA-SYNDROME から お借りしてます。 https://dova-s.jp/ 
+
+## AI　について
+
+teachable machine で作成したモデルを使用しています。
+
+https://teachablemachine.withgoogle.com/train
