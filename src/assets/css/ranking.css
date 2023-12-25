@@ -1,0 +1,42 @@
+
+.ranking {
+    max-width: 768px;
+    margin: auto;
+}
+.ranking-header {
+    margin: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+@media screen and (max-width: 400px) {
+    .ranking-header-title {
+      font-size: medium;
+    }
+  }
+
+.ranking-contents-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    margin: auto;
+}
+
+.ranking-contents-buttons-button {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid gray;
+    font-weight: bold;
+}
+
+.ranking-contents-buttons-button--goToTop {
+    color: black;
+    background-color: white;
+}
