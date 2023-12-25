@@ -30,6 +30,9 @@ app.get('/ranking', (req, res) => {
   res.sendFile(__dirname + '/html/ranking.html');
 })
 
+// 静的ファイルを提供する
+app.use(express.static(__dirname + '/assets'));
+
 //サーバーを起動したら、リクエストを8000番ポートで待ち受ける設定。
 app.listen(port, hostname, function () {
     console.log(`Server running at http://${hostname}:${port}/`);
