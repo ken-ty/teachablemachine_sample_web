@@ -15,19 +15,19 @@ app.get('/', (req, res) => {
 
 app.get('/menu', (req, res) => {
   // TODO: src でなく, dist ディレクトリを公開する設定にする
-  res.sendFile(__dirname + '/src/html/menu.html');
+  res.sendFile(__dirname + '/html/menu.html');
 })
 
 app.get('/game', (req, res) => {
-  res.sendFile(__dirname + '/src/html/game.html');
+  res.sendFile(__dirname + '/html/game.html');
 })
 
 app.get('/result', (req, res) => {
-  res.sendFile(__dirname + '/src/html/result.html');
+  res.sendFile(__dirname + '/html/result.html');
 })
 
 app.get('/ranking', (req, res) => {
-  res.sendFile(__dirname + '/src/html/ranking.html');
+  res.sendFile(__dirname + '/html/ranking.html');
 })
 
 //サーバーを起動したら、リクエストを8000番ポートで待ち受ける設定。
