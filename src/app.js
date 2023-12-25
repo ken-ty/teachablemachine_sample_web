@@ -1,11 +1,11 @@
-//expressモジュールを使えるように設定
+// expressモジュールを使えるように設定
 const express = require('express')
 
-//ホスト名とポート番号を指定
+// ホスト名とポート番号を指定
 const hostname = '127.0.0.1';
 const port = 8000;
 
-//expressモジュールを利用しアプリケーションオブジェクトappを作成
+// expressモジュールを利用しアプリケーションオブジェクトappを作成
 const app = express()
 
 // ルートは menu に遷移するものとする
