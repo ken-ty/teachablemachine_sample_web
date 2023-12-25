@@ -1,5 +1,7 @@
 # teachablemachine_sample_web
-teachablemachine を web で動かすサンプルです
+
+![image](./src/assets/images/DALL-E_generated_heroimage.png)
+teachablemachine を web で動かすサンプルです。
 
 ## 環境構築
 
