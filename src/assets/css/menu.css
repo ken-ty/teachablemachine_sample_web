@@ -1,0 +1,65 @@
+
+.menu {
+    max-width: 768px;
+    margin: auto;
+}
+.menu-header {
+    margin: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+@media screen and (max-width: 400px) {
+    .menu-header-title {
+      font-size: medium;
+    }
+  }
+.menu-header-button {
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* 再生中 */
+.audio-play > .menu-header-button {
+    background-color: lightgrey;
+}
+
+.menu-heroImage {
+    width: 100%;
+}
+
+.menu-contents {
+    margin-top: 20px;
+}
+
+.menu-contents-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    margin: auto;
+}
+
+.menu-contents-buttons-button {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid gray;
+    font-weight: bold;
+}
+
+.menu-contents-buttons-button--game {
+    color: white;
+    background-color: lightseagreen;
+}
+
+.menu-contents-buttons-button--ranking {
+    color: white;
+    background-color: orange;
+}

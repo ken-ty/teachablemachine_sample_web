@@ -3,21 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="menu.css">
-  <title>初期画面</title>
-
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/menu.css">
+  <script src="/js/toggleBGM.js" defer></script>
+  <title>アクションマスター | メニュー</title>
 </head>
 <body>
-<h1 class="title">アクションマスター</h1>
-<h2 class="maintitle">ジャンル</h2>
-<table class="tb">
-<tr>
-  <th class="m01"><a href="/game">スポーツ</a></th>
-  <td class="m02"><a href="/ranking">👑</a></td>
-</tr>
-</table>
-<p class="BGM">アクションマスターBGM</p>
-<audio controls loop src="忘れた頃にやって来る.mp3" type="audio/mp3"></audio>
+<div class="menu">
+  <div class="menu-header">
+    <h1 class="menu-header-title">アクションマスター</h1>
+    <div id="menu-bgmButton" class="menu-header-bgmButton">
+      <!-- audio controls loop にすると、audioプレイヤーがが表示される。開発時などに付与しても良い。 -->
+      <audio id="menu-audio" loop src="/music/Journey_through_Pixels.mp3" type="audio/mp3"></audio>
+      <button class="menu-header-button">BGM 🔈</button>
+    </div>
+  </div>
+  <image class="menu-heroImage" src="/images/DALL-E_generated_heroimage_2.png" alt="heroimage">
+  <div class="menu-contents">
+    <div class="menu-contents-buttons">
+      <a class="menu-contents-buttons-button menu-contents-buttons-button--game" href="/game">
+        GAME START
+      </a>
+      <a class="menu-contents-buttons-button menu-contents-buttons-button--ranking" href="/ranking">
+        RANKING
+      </a>
+    </div>
+  </div>
 </div>
 </body>
 </html>
