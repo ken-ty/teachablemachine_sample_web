@@ -1,0 +1,71 @@
+
+.game {
+    max-width: 768px;
+    margin: auto;
+}
+.game-header {
+    margin: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+@media screen and (max-width: 400px) {
+    .game-header-title {
+      font-size: medium;
+    }
+  }
+.game-header-button {
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* 再生中 */
+.audio-play > .game-header-button {
+    background-color: lightgrey;
+}
+
+.game-contents {
+    margin-top: 20px;
+}
+
+.game-contents-camera {
+    width: 100%;
+}
+
+.game-contents-theme {
+    margin: 0 20px;
+    font-size: large;
+    display: flex;
+}
+
+.game-contents-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    margin: auto;
+}
+
+.game-contents-buttons-button {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid gray;
+    font-weight: bold;
+}
+
+.game-contents-buttons-button--game {
+    color: white;
+    background-color: lightseagreen;
+}
+
+.game-contents-buttons-button--ranking {
+    color: white;
+    background-color: orange;
+}
