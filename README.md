@@ -49,5 +49,8 @@ TODO: dist ディレクトリを作成し、webpackでバンドルする
 ## AI　について
 
 teachable machine で作成したモデルを使用しています。
-
 https://teachablemachine.withgoogle.com/train
+
+参考: 
+- https://medium.com/@warronbebster/teachable-machine-tutorial-head-tilt-f4f6116f491
+- https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
