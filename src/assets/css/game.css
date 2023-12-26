@@ -26,16 +26,15 @@
     background-color: lightgrey;
 }
 
-.game-contents {
-    margin: 20px 0;
-}
-
-.game-contents-camera {
+.game-camera {
     width: 100%;
 }
 
+.game-contents {
+    margin: 20px 8px;
+}
+
 .game-contents-theme {
-    margin: 0 20px;
     font-size: large;
     display: flex;
 }

@@ -6,9 +6,165 @@
   <link rel="stylesheet" href="/css/sanitize.css">
   <link rel="stylesheet" href="/css/game.css">
   <script src="/js/getCameraSource.js" defer></script>
+  <script src="/js/timeCount.js" defer></script>
   <title>アクションマスター | お題のポーズを取れ！</title>
 </head>
-<body>
+<body>  
+  <!-- Teachable Machine関連の元コード -->
+  <!-- Teachable Machine Pose Model -->
+  <!-- <div><canvas id="canvas"></canvas></div>
+  <div id="label-container"></div>
+  <img id="myImage" style="display: none;" /> -->
+
+  <!-- TensorFlow.jsとTeachable Machine Pose Modelライブラリを含む -->
+  <!-- <script src="./tf.min.js"></script>
+  <script src="./teachablemachine-pose.min.js"></script> -->
+
+  <!-- <script type="text/javascript">
+    // Teachable Machine Pose ModelのURL
+    const URL = "https://teachablemachine.withgoogle.com/models/T2XF5f4wn/";
+    
+    // モデル、ウェブカム、キャンバス、ラベルコンテナ、および最大予測数の変数
+    let model, webcam, ctx, labelContainer, maxPredictions;
+    
+    // 初期化が開始されたかどうかを追跡する変数
+    let hasStarted = false;
+
+    // お題のリスト（適切なお題に変更してください）
+    const topics = [
+      "木のポーズ",
+      "ふううん！春日",
+      "ミッキーisジャンボリ",
+      "あかんすよ！",
+      // お題を追加できます
+    ];
+
+    // 現在のお題のインデックス
+    let currentTopicIndex = 0;
+
+    // 初期化関数
+    async function init() {
+      const modelURL = URL + "model.json";
+      const metadataURL = URL + "metadata.json";
+
+      // Teachable Machine Pose Modelをロード
+      model = await tmPose.load(modelURL, metadataURL);
+      maxPredictions = model.getTotalClasses();
+
+      // ウェブカムをセットアップ
+      const size = 400;
+      const fps = 30;
+      const flip = true;
+      webcam = new tmPose.Webcam(size, size, flip, fps);
+      await webcam.setup();
+      await webcam.play();
+
+      // 初期化が完了したことを示すフラグを更新
+      hasStarted = true;
+
+      // アニメーションループを開始
+      window.requestAnimationFrame(loop);
+
+      // キャンバスとラベルコンテナを設定
+      const canvas = document.getElementById("canvas");
+      canvas.width = size;
+      canvas.height = size;
+
+      labelContainer = document.getElementById("label-container");
+      labelContainer.innerHTML = "";
+
+      for (let i = 0; i < maxPredictions; i++) {
+        const labelDiv = document.createElement("div");
+        labelContainer.appendChild(labelDiv);
+      }
+
+      // ボタンクリック後に10秒後に画像を表示し、次のお題に切り替える
+      setTimeout(() => {
+        showNextTopic();
+        showImage();
+      }, 10000);
+    }
+
+    // アニメーションループ関数
+    async function loop(timestamp) {
+      // 初期化が完了していない場合、待機してループを継続
+      if (!hasStarted) {
+        window.requestAnimationFrame(loop);
+        return;
+      }
+
+      // ウェブカムフィードを更新
+      webcam.update();
+
+      // 現在のウェブカムフレームに基づいて予測を行う
+      await predict();
+
+      // アニメーションループを継続
+      window.requestAnimationFrame(loop);
+    }
+
+    // 最後の予測のタイムスタンプを追跡する変数
+    let lastTimestamp = 0;
+    
+    // 予測を行う関数
+    async function predict() {
+      const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+      const predictions = await model.predict(posenetOutput);
+
+      // キャンバスまたはポーズが利用できない場合、処理を終了
+      if (!webcam.canvas || !pose) return;
+
+      // ラベルコンテナに予測を表示
+      for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = `${predictions[i].className}: ${predictions[i].probability.toFixed(2)}`;
+        document.getElementById("label-container").childNodes[i].innerHTML = classPrediction;
+        
+        // 予測が1の場合、次のお題を表示
+        if (predictions[i].probability === 1) {
+          showNextTopic();
+          showImage();
+        }
+      }
+
+      // キャンバスにポーズを描画
+      drawPose(pose);
+    }
+
+    // キャンバスにポーズを描画する関数
+    function drawPose(pose) {
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      if (webcam.canvas) {
+        ctx.drawImage(webcam.canvas, 0, 0);
+        tmPose.drawKeypoints(pose.keypoints, 0.5, ctx);
+        tmPose.drawSkeleton(pose.keypoints, 0.5, ctx);
+      }
+    }
+
+    // 10秒後に画像を表示する関数
+    function showImage() {
+      // 画像のパス（適切なパスに変更してください）
+      var imagePath = "img/gojas.jpg";
+  
+      // 画像要素を取得
+      var imgElement = document.getElementById("myImage");
+  
+      // 画像のパスを設定
+      imgElement.src = imagePath;
+  
+      // 画像を表示
+      imgElement.style.display = "block";
+    }
+
+    // 次のお題に切り替える関数
+    function showNextTopic() {
+      // 現在のお題のインデックスをインクリメント
+      currentTopicIndex = (currentTopicIndex + 1) % topics.length;
+            // 次のお題を表示
+            document.querySelector('h1').innerText = topics[currentTopicIndex];
+    }
+  </script> -->
   <div class="game">
     <div class="game-header">
       <h1 class="game-header-title">お題のポーズを取れ！</h1>
@@ -16,20 +172,24 @@
         <button class="game-header-button">やめる 🔙</button>
       </a>
     </div>
+    <video id="camera" class="game-camera"></video>
     <div class="game-contents">
-      <video id="camera" class="game-contents-camera"></video>
       <div class="game-contents-theme">
         <p>お題： </p>
         <p class="game-contents-theme-target">木</p>
       </div>
-      <div class="game-contents-buttons">
+      <p id="game-contents-timer" class="game-contents-timer">00:00:00</p>
+      <button onclick="startTimer('game-contents-timer');">Start</button>
+      <button onclick="stopTimer('game-contents-timer')">Stop</button>
+      <!-- 使うかもしれないのでコメントアウトで残しておく。消すならCSSも。 -->
+      <!-- <div class="game-contents-buttons">
         <a class="game-contents-buttons-button game-contents-buttons-button--game" href="/game">
           GAME START
         </a>
         <a class="game-contents-buttons-button game-contents-buttons-button--ranking" href="/ranking">
           RANKING
         </a>
-      </div>
+      </div> -->
     </div>
   </div>
   </body>
