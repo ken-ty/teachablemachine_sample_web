@@ -1,7 +1,9 @@
 # teachablemachine_sample_web
 
 ![image](./src/assets/images/DALL-E_generated_heroimage.png)
+
 teachablemachine を web で動かすサンプルです。
+アクションマスターという、複数のお題のポーズを取り、タイムを競うゲームを作成します。
 
 ## 環境構築
 
